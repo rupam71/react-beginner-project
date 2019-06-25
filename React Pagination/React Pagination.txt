@@ -1,0 +1,112 @@
+Pagination File Structure
+
+
+
+      ---------------src--------------------
+      |               |                    |
+   components      Service              utilis
+      |                                    |
+ pagination.jsx                       paginate.js
+
+
+
+               
+
+src >> utilis  >>  paginate.js
+
+import _ from 'lodash';
+
+export function pagenate (items, pageNumber, pageSize) {
+    const startIndex = (pageNumber -1) * pageSize ;
+    return _(items).slice(startIndex).take(pageSize).value() ;
+    // _.slice(items, startIndex)
+    // _.take() 
+}
+
+
+
+
+
+
+INSTALL LODASH ::
+
+ $ npm i lodash@4.17.10
+
+
+
+
+
+
+src >> component >> common >> pagination.jsx
+
+import React, { Component } from 'react';
+import _ from 'lodash' ;
+import PropTypes from 'prop-types' ;
+
+class Pagination extends Component {
+   
+    render() { 
+        
+        const itemCount = this.props.itemsCount;
+        const pageSize = this.props.pageSize;
+        const currentPage = this.props.currentPage;
+        console.log(currentPage);
+
+        const pagesCount = Math.ceil(itemCount / pageSize) ;
+        if (pagesCount === 1) return null;
+        const pages = _.range(1, pagesCount + 1);
+
+        return ( 
+            <nav>
+                <ul className="pagination">
+                   {pages.map (page => (
+                       <li key={page} className={page === currentPage ? "page-item active": "page-item"}>
+                       <a onClick={()=> this.props.onPageChange(page)}
+                        className="page-link">
+                           {page}
+                       </a>
+                   </li>
+                   ))}
+                    
+                </ul>
+            </nav>
+            );
+    }
+}
+
+ 
+export default Pagination
+
+
+
+
+
+
+
+
+
+
+src >> component >>  movies
+
+import Pagination from "./common/pagination";
+import { pagenate } from "../utilis/pagenate" ;
+
+class Movies extends Component {
+  state = {
+    movies: getMovies(),
+    currentPage : 1, 
+    pageSize : 4
+  };
+
+
+handlePageChange = page =>{
+      this.setState({currentPage : page})
+  }
+
+
+<Pagination 
+                itemsCount={this.state.movies.length}
+                pageSize={this.state.pageSize}
+                currentPage={this.state.currentPage}
+                onPageChange={this.handlePageChange}
+            />
