@@ -1,0 +1,15 @@
+Filtering File Structure
+
+
+
+	      ---------------src--------------------
+	      |                                    |
+	   components ------ Common              Service
+ 	      |                |                    
+ 	  movie.jsx      listGroup.jsx                 
+ 	moviesTable.jsx
+
+moviesTable.jsx -- Full Table
+Main Filtering
+
+
